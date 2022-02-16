@@ -4,8 +4,6 @@ Access Undenied parses AWS AccessDenied CloudTrail events, explains the reasons 
 
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/noamdahan.svg?style=social&label=Follow%20the%20author)](https://twitter.com/noamdahan)
 
-![Gif demonstrating an example of using AccessUndenied](examples/readme_run_example.gif)
-
 - [Access Undenied](#access-undenied)
   - [Overview](#overview)
     - [Common use cases](#common-use-cases)
