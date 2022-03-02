@@ -1,0 +1,30 @@
+{
+  "invalidActionMessages": [
+    "Cross-account pass role is not allowed, The role should belong to account '(?P<passRoleAccountId>\\d{12})'",
+    "invalid arn",
+    "arn is invalid",
+    "(?P<awsServiceNameError>[^\\s]+) is not a valid AWS service name \\(Service Principal\\)"
+  ],
+  "accessDeniedMessages": [
+    "An error occurred \\(AccessDeniedException\\) when calling the (?P<actionName>[^\\s]+) operation: User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) (on resource: (?P<resource>[^\\s]+) )?with an explicit deny in a (?P<explicitDenyPolicyType>.+)",
+    "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission2>[^\n\\s]+) (on resource: (?P<resource>[^\\s]+) )?because no (?P<missingAllowPolicyType>[^\\s]+) policy allows the (?P<iamPermission>[^\n\\s]+) action",
+    "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) on resource: (?P<resource>[^\\s]+$)",
+    "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) on resource: (?P<resource>[^\\s]+) with an explicit deny",
+    "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) on resource: (?P<resource>[^\\s]+) with an explicit deny in an? (?P<policyType>[^\\s]+) policy",
+    "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) on resource: role (?P<roleName>[^\\s]+$)",
+    "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) with an explicit deny",
+    "User: (?P<principal>[^\\s]+) is not authorized to access this resource",
+    "User: (?P<principal>[^\\s]+) is not authorized to perform (?P<iamPermission>[^\n\\s]+) on resource: access key (?P<accessKeyId>[\\w]+)",
+    "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) on the specified resource",
+    "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+)",
+    "Principal \\[(?P<principal>[^\\s]+)\\] is not allowed to execute \\[(?P<iamPermission>[^\n\\s]+)\\] on the resource",
+    "Access to the resource (?P<resource>[^\\s]+) is denied.",
+    "Not authorized to access resource (?P<resource>[^\\s]+)",
+    "Not whitelisted for accessing ActionType.Category='(?P<actionTypeCategory>[^\\s]+)' ActionType.Owner='(?P<actionTypeOwner>[^\\s]+)' ActionType.Provider='(?P<actionTypeProvider>[^\\s]+)' ActionType.Version='(?P<actionTypeVersion>[^\\s]+)'",
+    "You are not authorized to perform this operation.",
+    "An unknown error occurred",
+    "No access to any requested resource",
+    "You are not authorized to perform this operation.",
+    "Access Denied"
+  ]
+}

@@ -4,6 +4,8 @@ Access Undenied parses AWS AccessDenied CloudTrail events, explains the reasons 
 
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/noamdahan.svg?style=social&label=Follow%20the%20author)](https://twitter.com/noamdahan)
 
+![Gif demonstrating an example of using AccessUndenied](examples/example.gif)
+
 - [Access Undenied](#access-undenied)
   - [Overview](#overview)
     - [Common use cases](#common-use-cases)
@@ -18,7 +20,6 @@ Access Undenied parses AWS AccessDenied CloudTrail events, explains the reasons 
       - [Cross-account assets and SCPs](#cross-account-assets-and-scps)
     - [CLI Commands](#cli-commands)
       - [Analyze](#analyze)
-        - [Example:](#example)
       - [Get SCPs](#get-scps)
   - [Output Format](#output-format)
     - [Output Fields](#output-fields)
@@ -29,8 +30,8 @@ Access Undenied parses AWS AccessDenied CloudTrail events, explains the reasons 
   - [Acknowledgements](#acknowledgements)
   - [Appendices](#appendices)
     - [Setting up a venv](#setting-up-a-venv)
-    - [Getting CloudTrail events from the AWS Console's event history](#getting-cloudtrail-events-from-the-aws-consoles-event-history)
-    - [Example CloudTrail event](#example-cloudtrail-event)
+    - [Getting Cloudtrail events from the AWS Console's event history](#getting-cloudtrail-events-from-the-aws-consoles-event-history)
+    - [Example Cloudtrail event](#example-cloudtrail-event)
     - [Least privilege AccessUndenied policy](#least-privilege-accessundenied-policy)
 
 ## Overview
@@ -38,7 +39,6 @@ Access Undenied parses AWS AccessDenied CloudTrail events, explains the reasons 
 Access Undenied analyzes AWS CloudTrail AccessDenied events, scans the environment to identify and explain the reasons
 for them, and offers actionable least-privilege remediation suggestions.
 
-Note: Access Undenied is *not yet live* and cannot be installed at this time.
 ### Common use cases
 Sometimes, the [new and more detailed AccessDenied messages
 provided by AWS](https://aws.amazon.com/blogs/security/aws-introduces-changes-to-access-denied-errors-for-easier-permissions-troubleshooting/)
@@ -48,7 +48,7 @@ services with (many or exclusively) undetailed messages are: S3, SSO, EFS, EKS, 
 2. When the reason for AccessDenied is an explicit deny, it can be difficult to track down 
 and evaluate every relevant policy.
 3. Specifically when the reason is an explicit deny in a service control policy (SCP), one has to find and
-every single policy in the organization that applies to the account and evaluate it.
+every single policy in the organization that applies to the account.
 4. When the problem is a missing `Allow` statement, AccessUndenied automatically offers a least-privilege
 policy based on the CloudTrail event.
 ## Simple Startup
@@ -59,7 +59,7 @@ pip install aws-access-undenied
 ```
 Analyze a CloudTrail event file.
 ```
-aws-access-undenied analyze --file event_history.json
+aws-access-undenied --file event_history.json
 ```
 
 ## Installation
@@ -82,18 +82,18 @@ python -m pip install --editable .
 
 ### Getting events
 
-Access Undenied works by analyzing a CloudTrail event in which access was denied and the error code is AccessDenied
-or Client.UnauthorizedOperation. The tool works on an input of one or more CloudTrail events. You can get these events from wherever
-you prefer  – in the event history in the console, via the LookupEvents API, or through whatever
-system you use to filter and detect events: Athena, Splunk and others. You can either download the records file 
+Access Undenied works by analyzing a CloudTrail event where access was denied and the error code is either AccessDenied
+or Client.UnauthorizedOperation, it works on an input of one or more CloudTrail events. You can get them from wherever
+you get events, they can be found in the event history in the console, or by the LookupEvents API, or through whatever
+system you use in order to filter and detect events: Athena, Splunk, others. You can either download the records file 
 (the default format for multiple events) or just copy and paste a single event. For an example of how to do 
-this: [Getting CloudTrail events from the AWS Console's event history](#getting-cloudtrail-events-from-the-aws-consoles-event-history)
+this: [Getting Cloudtrail events from the AWS Console's event history](#getting-cloudtrail-events-from-the-aws-consoles-event-history)
 
 ### Permissions
 
-Access Undenied runs with the default permissions of the environment running the cli command and accepts
-the `--profile` flag for using a different profile from .aws/credentials. You should grant these permissions to the 
-role running access-denied
+Access Undenied runs with the default permissions of the environment running the cli command, and accepts
+the `--profile` flag for using a different profile from .aws/credentials. The role running aws-access-undenied should have
+at be granted these permissions:
 1. Attach the `SecurityAudit` managed policy
 2. Attach this inline policy: `AccessUndeniedAssumeRole`
 
@@ -115,21 +115,21 @@ role running access-denied
   ]
 }
 ```
-If you do not wish to attach `SecurityAudit`, you can instead attach the updating [least-privilege
+If you do not wish to attach `SecurityAudit`, you may instead attach the updating [least-privilege
  AccessUndenied policy](#least-privilege-accessundenied-policy)
 #### Same account assets only, no SCPs
 
-When both the resource and the principal are in the same account as the credentials used to run AccessUndenied, and
+When both the resource and the principal are in the same account as the credentials used to run AccessUndenied and
 Service Control Policies (SCPs) do not need to be considered, it is sufficient to just run AccessUndenied with default
 credentials or a profile, and you do not need to set up any additional profiles.
 
 #### Cross-account assets and SCPs
 
-To consider assets in multiple accounts and/or SCPs in the management account, you need to set up AWS cross-account roles
-with the [same policy](#permissions) and the same role name (the default is `AccessUndeniedRole`).
+To consider assets in multiple accounts and/or SCPs in the management account, we need to set up AWS cross-account roles
+with the [same policy](#permissions) and the same name as each other (the default is `AccessUndeniedRole`)
 
-When setting up these roles, remember to set up the appropriate trust policy (trusting the credentials in the source
-account, the one in which you're running AccessUndenied):
+when setting up these roles, remember to set up the appropriate trust policy (trusting the credentials in the source
+account, the one you're running AccessUndenied in):
 
 ```json
 {
@@ -169,7 +169,7 @@ Create an identity policy (inline or managed) with the following permissions:
 ```
 
 
-### CLI commands
+### CLI Commands
 
 Simplest command
 
@@ -192,7 +192,7 @@ Commands:
 
 #### Analyze
 This command is used to analyze AccessDenied events. It can be used either with the
-`management-account-role-arn` parameter to retrieve SCPs or with the
+`management-account-role-arn` parameter to retrieve SCPs, or with the
 `scp-file` parameter to use a policy data file created by the [get_scps](#get-scps)
 command.
 ```
@@ -202,7 +202,7 @@ Options:
                                   by the get_scps command.
   --management-account-role-arn TEXT
                                   a cross-account role in the management
-                                  account of the organization that must be
+                                  account of the organization, which must be
                                   assumable by your credentials.
   --cross-account-role-name TEXT  The name of the cross-account role for
                                   AccessUndenied to assume. default:
@@ -261,8 +261,8 @@ aws-access-undenied analyze --events-file events_file.json --scp-file scp_data.j
   }
 }
 ```
-This output, for example, tells us that access was denied because an identity-based policy
-is missing an `Allow` statement.
+This output for example, tells us that access was denied because of there is no 
+`Allow` statement in an identity-based policy.
 To  remediate, we should attach to the IAM role 
 `arn:aws:iam::123456789012:role/MyRole` the policy:
 ```json
@@ -277,9 +277,9 @@ To  remediate, we should attach to the IAM role
   ]
 }
 ```
-### Output fields
+### Output Fields
 #### AccessDeniedReason:
-The reason for which access was denied. Possible values:
+The reason why access was denied. Possible Values
 
 Missing allow in:
 * Identity policy
@@ -297,38 +297,36 @@ Explicit deny from:
 Invalid action:
 * a principal or action that cannot be simulated by access undenied.
 
-"Allowed":
-
-An `"Allowed"` result means that access undenied could not find the reason 
-for AccessDenied. This can be for a variety of reasons:
+"Allowed"
+An `"Allowed"` result means that access undenied couldn't find the reason 
+for AccessDenied, this could be for a variety of reasons:
 * Policies, resources and/or identities have changed since the CloudTrail event and access 
 now actually allowed
 * Unsupported resource policy type
 * Unsupported policy type (VPC endpoint policy, session policy, etc.)
 * Unsupported condition key
 #### ResultDetails
-These are the details of the result and provide an explanation of the remediation steps, 
-This section can contain `PoliciesToAdd` or `ExplicitDenyPolicies`.
+These are the details of the result, explaining the remediation steps, 
+this section may contain either `PoliciesToAdd` or `ExplicitDenyPolicies`.
 ##### PoliciesToAdd
-These are the policies that need to be added to enable least-privilege access.
+These are the policies which need to be added to enable least-privilege access.
 Each policy contains: 
 * `AttachmentTargetArn`: the entity to which the new policy
 should be attached
-* `Policy`: The contents of the policy to be added
+* `Policy`: The content of the policy to be added
 ##### ExplicitDenyPolicies
-These are the policies that are causing the explicit deny, and so need to be removed or
+These are the policies cause explicit deny, which need to be removed or
 modified to facilitate access. AccessUndenied also gives the specific
 statement causing the `Deny` outcome.
-* `AttachmentTargetArn`: The entity to which the policy causing explicit
-deny is currently attached.
+* `AttachmentTargetArn`: the entity to which the policy causing explicit
+deny is currently attached
 * `PolicyArn`: The arn (if applicable) of the policy causing explicit deny.
 For the sake of convenience, resource policies are represented by generic 
-placeholder arns such as: `arn:aws:s3:::my-bucket/S3BucketPolicy`.
-* `PolicyName`: The policy name, if applicable. Resource policies.
+placeholder arns such as: `arn:aws:s3:::my-bucket/S3BucketPolicy`
+* `PolicyName`: The policy name, if applicable. Resource policies
 are represented by generic placeholder names such as `S3BucketPolicy`
-* `PolicyStatement`: The specific statement causing explicit deny
-in the aforementioned policy.
-
+* `PolicyStatement`: The specific statement in the aforementioned policy
+causing explicit deny
 ## Acknowledgements
 This project makes use of Ian Mckay's [iam-dataset](https://github.com/iann0036/iam-dataset) Ben
 Kehoe's [aws-error-utils](https://github.com/benkehoe/aws-error-utils).
@@ -347,21 +345,21 @@ python -m venv .venv
 | Windows    | cmd.exe         | C:\> .venv\Scripts\activate.bat        |
 |            | PowerShell      | PS C:\> .venv\Scripts\Activate.ps1     |
 
-### Getting CloudTrail events from the AWS Console's event history
+### Getting Cloudtrail events from the AWS Console's event history
 
 1. Open the AWS console
 2. Go to "CloudTrail"
 3. In the sidebar on the left, click Event History
 4. Find the event you're interested in checking. Unfortunately, the console doesn't let you filter by ErrorCode, so
    you'll have to filter some other way, e.g. by username or event name.
-5. Download the event by:
-   * Clicking the event, copying the event record, and pasting the event to a json file locally; or,
-   * Clicking download events -> download as JSON in the top-right corner. (Access Undenied will analyze all events
+5. Download the event:
+    1. By clicking the event, copying the event record, and pasting it to a json file locally. or,
+    2. By clicking download events -> download as JSON in the top-right corner. (Access Undenied will handle all events
        where the ErrorCode is AccessDenied or Client.UnauthorizedOperation)
 
-With the event saved locally, you can use the [cli command](#cli-arguments)
+With the event saved locally, you may use the [cli command](#cli-arguments)
 
-### Example CloudTrail event
+### Example Cloudtrail event
 
 One event in file:
 
