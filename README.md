@@ -432,11 +432,14 @@ Multiple events in file:
       "Sid": "AccessUndeniedLeastPrivilegePolicy",
       "Effect": "Allow",
       "Action": [
+        "ecr:GetRepositoryPolicy",
         "iam:Get*",
         "iam:List*",
         "iam:SimulateCustomPolicy",
         "kms:GetKeyPolicy",
-        "organizations:DescribeOrganization",
+        "lambda:GetPolicy",
+        "organizations:List*",
+        "organizations:Describe*",
         "s3:GetBucketPolicy",
         "secretsmanager:GetResourcePolicy",
         "sts:DecodeAuthorizationMessage"
