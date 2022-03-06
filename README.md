@@ -252,7 +252,7 @@ aws-access-undenied analyze --events-file events_file.json --scp-file scp_data.j
             {
               "Effect": "Allow",
               "Action": "rds:DescribeDBInstances",
-              "Resource": "arn:aws:rds:ap-northeast-3:120252999260:db:*"
+              "Resource": "arn:aws:rds:ap-northeast-3:123456789012:db:*"
             }
           ]
         }
@@ -272,7 +272,7 @@ To  remediate, we should attach to the IAM role
     {
       "Effect": "Allow",
       "Action": "rds:DescribeDBInstances",
-      "Resource": "arn:aws:rds:ap-northeast-3:120252999260:db:*"
+      "Resource": "arn:aws:rds:ap-northeast-3:123456789012:db:*"
     }
   ]
 }
