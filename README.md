@@ -146,29 +146,8 @@ account, the one you're running AccessUndenied in):
   ]
 }
 ```
-Create an identity policy (inline or managed) with the following permissions:
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "iam:Get*",
-        "iam:List*",
-        "kms:GetKeyPolicy",
-        "organizations:DescribeOrganization",
-        "s3:GetBucketPolicy",
-        "secretsmanager:GetResourcePolicy",
-        "sts:DecodeAuthorizationMessage"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-```
-
-
+Attach `SecurityAudit` managed policy to the identity , or the updating [least-privilege
+ AccessUndenied policy](#least-privilege-accessundenied-policy)
 ### CLI Commands
 
 Simplest command
