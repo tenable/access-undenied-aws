@@ -92,17 +92,21 @@ this: [Getting Cloudtrail events from the AWS Console's event history](#getting-
 ### Permissions
 
 Access Undenied runs with the default permissions of the environment running the cli command, and accepts
-the `--profile` flag for using a different profile from .aws/credentials. The role running aws-access-undenied should have
-at be granted these permissions:
-1. Attach the `SecurityAudit` managed policy
-2. Attach this inline policy: `AccessUndeniedAssumeRole`
+the `--profile` flag for using a different profile from .aws/credentials. 
+```
+aws-access-undenied --profile my-profile analyze --events-file cloudtrail_events.json
+```
+(note that the location of the profile flag must be before the sub-command (which in this case is `analyze`)
 
+The role running aws-access-undenied should be granted the appropriate permissions, to do so:
+1. Attach the `SecurityAudit` managed policy
+2. If you would like to scan cross-account assets and analyze service control policies, attach the following inline policy. This policy allows AccessUndenied to assume roles in your other accounts: 
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "AccessUndenied-AssumeRole",
+      "Sid": "AccessUndeniedAssumeRole",
       "Effect": "Allow",
       "Action": "sts:AssumeRole",
       "Resource": [
