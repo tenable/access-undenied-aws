@@ -53,11 +53,11 @@ every single policy in the organization that applies to the account.
 policy based on the CloudTrail event.
 ## Simple Startup
 
-Install AccessUndenied
+Install AccessUndenied:
 ```
 pip install aws-access-undenied
 ```
-Analyze a CloudTrail event file.
+Analyze a CloudTrail event file:
 ```
 aws-access-undenied --file event_history.json
 ```
@@ -72,7 +72,7 @@ python -m pip install aws-access-undenied
 
 ### Installation from source code (development)
 
-To install from source code, you can [set up a venv](#setting-up-a-venv) (optionally), and within that venv
+To install from source code, you can [set up a venv](#setting-up-a-venv) (optionally), and within that venv.
 
 ```
 python -m pip install --editable .
@@ -96,10 +96,10 @@ the `--profile` flag for using a different profile from .aws/credentials.
 ```
 aws-access-undenied --profile my-profile analyze --events-file cloudtrail_events.json
 ```
-(note that the location of the profile flag must be before the sub-command (which in this case is `analyze`)
+(note that the location of the profile flag must be before the sub-command (which in this case is `analyze`).
 
 The role running aws-access-undenied should be granted the appropriate permissions, to do so:
-1. Attach the `SecurityAudit` managed policy
+1. Attach the `SecurityAudit` managed policy.
 2. If you would like to scan cross-account assets and analyze service control policies, attach the following inline policy. This policy allows AccessUndenied to assume roles in your other accounts: 
 ```json
 {
@@ -120,7 +120,7 @@ The role running aws-access-undenied should be granted the appropriate permissio
 }
 ```
 If you do not wish to attach `SecurityAudit`, you may instead attach the updating [least-privilege
- AccessUndenied policy](#least-privilege-accessundenied-policy)
+ AccessUndenied policy](#least-privilege-accessundenied-policy).
 #### Same account assets only, no SCPs
 
 When both the resource and the principal are in the same account as the credentials used to run AccessUndenied and
