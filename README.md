@@ -1,4 +1,4 @@
-# Access Undenied
+# Access Undenied on AWS
 
 Access Undenied parses AWS AccessDenied CloudTrail events, explains the reasons for them, and offers actionable fixes.
 
@@ -55,11 +55,11 @@ policy based on the CloudTrail event.
 
 Install AccessUndenied:
 ```
-pip install aws-access-undenied
+pip install access-undenied-aws
 ```
 Analyze a CloudTrail event file:
 ```
-aws-access-undenied --file event_history.json
+access-undenied-aws --file event_history.json
 ```
 
 ## Installation
@@ -67,7 +67,7 @@ aws-access-undenied --file event_history.json
 ### Installation from pip
 
 ```
-python -m pip install aws-access-undenied 
+python -m pip install access-undenied-aws 
 ```
 
 ### Installation from source code (development)
@@ -94,11 +94,11 @@ this: [Getting Cloudtrail events from the AWS Console's event history](#getting-
 Access Undenied runs with the default permissions of the environment running the cli command, and accepts
 the `--profile` flag for using a different profile from .aws/credentials. 
 ```
-aws-access-undenied --profile my-profile analyze --events-file cloudtrail_events.json
+access-undenied-aws --profile my-profile analyze --events-file cloudtrail_events.json
 ```
 (note that the location of the profile flag must be before the sub-command (which in this case is `analyze`).
 
-The role running aws-access-undenied should be granted the appropriate permissions, to do so:
+The role running access-undenied-aws should be granted the appropriate permissions, to do so:
 1. Attach the `SecurityAudit` managed policy.
 2. If you would like to scan cross-account assets and analyze service control policies, attach the following inline policy. This policy allows AccessUndenied to assume roles in your other accounts: 
 ```json
@@ -157,7 +157,7 @@ Attach `SecurityAudit` managed policy to the identity , or the updating [least-p
 Simplest command
 
 ```
-aws-access-undenied analyze --events-file cloudtrail_events.json
+access-undenied-aws analyze --events-file cloudtrail_events.json
 ```
 
 All options:
@@ -200,7 +200,7 @@ Options:
 ```
 **Example:**
 ```
-aws-access-undenied analyze --events-file events_file.json
+access-undenied-aws analyze --events-file events_file.json
 ```
 #### Get SCPs
 This command is used to writes the organization's SCPs and organizational tree
@@ -213,11 +213,11 @@ Options:
 ```
 **Example:**
 ```
-aws-access-undenied get-scps
+access-undenied-aws get-scps
 ```
 Then when running analyzing (from the same account or a different account)
 ```
-aws-access-undenied analyze --events-file events_file.json --scp-file scp_data.json
+access-undenied-aws analyze --events-file events_file.json --scp-file scp_data.json
 ```
 
 ## Output Format

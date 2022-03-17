@@ -1,15 +1,15 @@
 import json
 from typing import Optional, TYPE_CHECKING, Sequence, Dict, Any
 
-from aws_access_undenied import (
+from access_undenied_aws import (
     results,
     logger,
 )
-from aws_access_undenied import event
-from aws_access_undenied import common
-from aws_access_undenied import event_permission_data
-from aws_access_undenied import iam_policy_data
-from aws_access_undenied import result_details
+from access_undenied_aws import event
+from access_undenied_aws import common
+from access_undenied_aws import event_permission_data
+from access_undenied_aws import iam_policy_data
+from access_undenied_aws import result_details
 
 if TYPE_CHECKING:
     from mypy_boto3_iam.type_defs import (

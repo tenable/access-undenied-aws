@@ -12,8 +12,8 @@ from typing import (
     Iterable,
 )
 
-from aws_access_undenied import simulate_custom_policy_result_analyzer
-from aws_access_undenied import (
+from access_undenied_aws import simulate_custom_policy_result_analyzer
+from access_undenied_aws import (
     event_permission_data,
     iam_utils,
     event,
@@ -23,7 +23,7 @@ from aws_access_undenied import (
     utils,
     logger,
 )
-from aws_access_undenied.iam_policy_data import IamPolicyData
+from access_undenied_aws.iam_policy_data import IamPolicyData
 
 if TYPE_CHECKING:
     from mypy_boto3_iam import IAMClient

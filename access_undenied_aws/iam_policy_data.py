@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from aws_access_undenied import common
-from aws_access_undenied import event_permission_data
-from aws_access_undenied import iam_utils
-from aws_access_undenied import logger
-from aws_access_undenied import resource_policy_utils
-from aws_access_undenied import organization_node
+from access_undenied_aws import common
+from access_undenied_aws import event_permission_data
+from access_undenied_aws import iam_utils
+from access_undenied_aws import logger
+from access_undenied_aws import resource_policy_utils
+from access_undenied_aws import organization_node
 
 
 class IamPolicyData(object):

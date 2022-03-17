@@ -8,10 +8,10 @@ import boto3
 import botocore.exceptions
 import pkg_resources
 
-from aws_access_undenied import event
-from aws_access_undenied import common
-from aws_access_undenied import logger
-from aws_access_undenied import utils
+from access_undenied_aws import event
+from access_undenied_aws import common
+from access_undenied_aws import logger
+from access_undenied_aws import utils
 
 ACCESS_DENIED_MESSAGES = json.load(
     open(

@@ -3,10 +3,10 @@ import boto3
 import json
 from typing import List, Dict, Any, TYPE_CHECKING, Optional, IO
 
-from aws_access_undenied import common
-from aws_access_undenied import logger
-from aws_access_undenied import organization_node
-from aws_access_undenied.organization_node import OrganizationNode
+from access_undenied_aws import common
+from access_undenied_aws import logger
+from access_undenied_aws import organization_node
+from access_undenied_aws.organization_node import OrganizationNode
 
 if TYPE_CHECKING:
     from mypy_boto3_organizations import OrganizationsClient

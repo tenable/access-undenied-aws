@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from typing import Optional, List, Dict, Any
 
-from aws_access_undenied import common, logger
+from access_undenied_aws import common, logger
 
 
 class OrganizationNode(object):

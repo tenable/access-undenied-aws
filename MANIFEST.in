@@ -19,6 +19,6 @@
 include NOTICE
 include LICENSE
 include README.md
-graft aws_access_undenied
-graft aws_access_undenied/definitions
+graft access_undenied_aws
+graft access_undenied_aws/definitions
 global-exclude __pycache__  *.pyc

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import json
 
-from aws_access_undenied import common
-from aws_access_undenied import result_details
+from access_undenied_aws import common
+from access_undenied_aws import result_details
 
 
 class Result(object):

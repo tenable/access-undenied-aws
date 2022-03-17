@@ -6,8 +6,8 @@ import collections.abc
 import json
 from typing import List, TYPE_CHECKING, Optional, Union, Iterable
 
-from aws_access_undenied import common
-from aws_access_undenied import logger
+from access_undenied_aws import common
+from access_undenied_aws import logger
 
 if TYPE_CHECKING:
     from mypy_boto3_iam import IAMClient

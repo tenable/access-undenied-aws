@@ -9,10 +9,10 @@ import click_log
 import colorlog
 import json
 
-from aws_access_undenied import analysis
-from aws_access_undenied import common
-from aws_access_undenied import logger
-from aws_access_undenied import organizations
+from access_undenied_aws import analysis
+from access_undenied_aws import common
+from access_undenied_aws import logger
+from access_undenied_aws import organizations
 
 
 def _initialize_logger() -> None:
@@ -62,7 +62,7 @@ pass_config = click.make_pass_decorator(common.Config, ensure=True)
     default=None,
 )
 @pass_config
-def aws_access_undenied(config: common.Config, profile: str) -> None:
+def access_undenied_aws(config: common.Config, profile: str) -> None:
     """
     Parses AWS AccessDenied CloudTrail events, explains the reasons for them, and offers actionable fixes.
     """
@@ -71,7 +71,7 @@ def aws_access_undenied(config: common.Config, profile: str) -> None:
     config.iam_client = config.session.client("iam")
 
 
-@aws_access_undenied.command()
+@access_undenied_aws.command()
 @click.option(
     "--events-file",
     help="input file of CloudTrail events",
@@ -135,7 +135,7 @@ def analyze(
     analysis.analyze_cloudtrail_events(config, events_file)
 
 
-@aws_access_undenied.command()
+@access_undenied_aws.command()
 @click.option(
     "--output-file",
     help="output file for scp data (default: scp_data.json)",

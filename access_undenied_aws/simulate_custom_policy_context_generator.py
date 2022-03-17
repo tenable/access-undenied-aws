@@ -13,9 +13,9 @@ from typing import (
 import boto3
 import botocore.exceptions
 
-from aws_access_undenied import event
-from aws_access_undenied import event_permission_data
-from aws_access_undenied import logger
+from access_undenied_aws import event
+from access_undenied_aws import event_permission_data
+from access_undenied_aws import logger
 
 if TYPE_CHECKING:
     from mypy_boto3_iam.type_defs import ContextEntryTypeDef

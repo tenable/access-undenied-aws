@@ -6,9 +6,9 @@ import boto3
 import botocore
 from aws_error_utils import errors
 
-from aws_access_undenied import common
-from aws_access_undenied import event_permission_data
-from aws_access_undenied import logger
+from access_undenied_aws import common
+from access_undenied_aws import event_permission_data
+from access_undenied_aws import logger
 
 
 def _get_ecr_resource_policy(
