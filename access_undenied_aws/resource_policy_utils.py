@@ -12,10 +12,10 @@ from access_undenied_aws import logger
 
 
 def _get_ecr_resource_policy(
-    arn_match: re.Match,
-    session: boto3.Session,
-    region: str,
-    resource: common.Resource,
+        arn_match: re.Match,
+        session: boto3.Session,
+        region: str,
+        resource: common.Resource,
 ) -> Optional[common.Policy]:
     repository_policy_response = session.client(
         "ecr", region_name=region
@@ -31,7 +31,7 @@ def _get_ecr_resource_policy(
 
 
 def _get_iam_resource_policy(
-    session: boto3.Session, resource: common.Resource
+        session: boto3.Session, resource: common.Resource
 ) -> Optional[common.Policy]:
     resource_policy_document = json.dumps(
         session.client("iam").get_role(RoleName=resource.arn.split("/")[-1])["Role"][
@@ -49,10 +49,10 @@ def _get_iam_resource_policy(
 
 
 def _get_kms_resource_policy(
-    arn_match: re.Match,
-    session: boto3.Session,
-    region: str,
-    resource: common.Resource,
+        arn_match: re.Match,
+        session: boto3.Session,
+        region: str,
+        resource: common.Resource,
 ) -> Optional[common.Policy]:
     key_policy_document = session.client("kms", region_name=region).get_key_policy(
         KeyId=(arn_match.group("resource_id")), PolicyName="default"
@@ -68,10 +68,10 @@ def _get_kms_resource_policy(
 
 
 def _get_lambda_resource_policy(
-    arn_match: re.Match,
-    session: boto3.Session,
-    region: str,
-    resource: common.Resource,
+        arn_match: re.Match,
+        session: boto3.Session,
+        region: str,
+        resource: common.Resource,
 ) -> Optional[common.Policy]:
     lambda_function_policy_response = session.client(
         "lambda", region_name=region
@@ -86,10 +86,8 @@ def _get_lambda_resource_policy(
     )
 
 
-def _get_resource_account_session(
-    config: common.Config, principal_account_id: str, resource: common.Resource
-) -> boto3.Session:
-    if resource.account_id == principal_account_id:
+def _get_resource_account_session(config: common.Config, resource: common.Resource) -> boto3.Session:
+    if resource.account_id == config.account_id:
         return config.session
 
     role_arn = f"arn:aws:iam::{resource.account_id}:role/{config.cross_account_role_name}"
@@ -115,7 +113,7 @@ def _get_resource_account_session(
 
 
 def _get_s3_resource_policy(
-    arn_match: re.Match, session: boto3.Session, resource: common.Resource
+        arn_match: re.Match, session: boto3.Session, resource: common.Resource
 ) -> Optional[common.Policy]:
     bucket_name = arn_match.group("resource_type") or arn_match.group("resource_id")
     s3_client = session.client("s3")
@@ -134,10 +132,10 @@ def _get_s3_resource_policy(
 
 
 def _get_secretsmanager_resource_policy(
-    arn_match: re.Match,
-    session: boto3.Session,
-    region: str,
-    resource: common.Resource,
+        arn_match: re.Match,
+        session: boto3.Session,
+        region: str,
+        resource: common.Resource,
 ) -> Optional[common.Policy]:
     secretsmanager_client = session.client("secretsmanager", region_name=region)
     secret_policy_response = secretsmanager_client.get_resource_policy(
@@ -154,9 +152,9 @@ def _get_secretsmanager_resource_policy(
 
 
 def get_resource_policy(
-    config: common.Config,
-    event_permission_data_: event_permission_data.EventPermissionData,
-    region: str,
+        config: common.Config,
+        event_permission_data_: event_permission_data.EventPermissionData,
+        region: str,
 ) -> Optional[common.Policy]:
     if "*" in event_permission_data_.resource.arn:
         return None
@@ -177,11 +175,7 @@ def get_resource_policy(
                 " ignoring resource policy..."
             )
             return None
-    resource_account_session = _get_resource_account_session(
-        config,
-        event_permission_data_.principal.account_id,
-        event_permission_data_.resource,
-    )
+    resource_account_session = _get_resource_account_session(config, event_permission_data_.resource)
     try:
         if service_name == "iam" and event_permission_data_.iam_permission in [
             "AssumeRole",
