@@ -131,7 +131,7 @@ def analyze(
         suppress_output,
         cross_account_role_name,
     )
-    organizations.initialize_organization_data(config, scp_file)
+    organizations.initialize_organization_data(config, scp_file.read())
     analysis.analyze_cloudtrail_events(config, events_file)
 
 

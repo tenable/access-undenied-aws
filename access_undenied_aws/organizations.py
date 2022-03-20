@@ -162,12 +162,12 @@ def _get_target_policies_with_policy_document(
 
 
 def initialize_organization_data(
-    config: common.Config, scp_file: Optional[IO[str]]
+    config: common.Config, scp_file_content: str
 ) -> None:
     config.management_account_id = _get_management_account_id(config.session)
-    if scp_file:
-        config.organization_nodes = json.load(
-            scp_file, object_hook=_deserialize_organization_nodes
+    if scp_file_content:
+        config.organization_nodes = json.loads(
+            scp_file_content, object_hook=_deserialize_organization_nodes
         )
         logger.debug(
             "Organization data and SCPs successfully loaded from SCP data" " file..."
