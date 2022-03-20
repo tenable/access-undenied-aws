@@ -185,7 +185,8 @@ def analyze_cloudtrail_events(config: common.Config, raw_events_file_path):
     # Multiple CloudTrail log records in file or single event
     for raw_event in raw_events.get("Records") or [raw_events]:
         result = analyze(config, raw_event)
-        _write_to_output_buffer(config, result)
+        if result:
+            _write_to_output_buffer(config, result)
     _write_to_file(config.output_file, config.output_json)
 
 
