@@ -35,7 +35,7 @@ def _initialize_logger() -> None:
     root_handler.setFormatter(formatter)
 
 
-def _initialize_config_from_user_input(
+def initialize_config_from_user_input(
     config: common.Config,
     output_file: IO[str],
     management_account_role_arn: str,
@@ -124,7 +124,7 @@ def analyze(
     """
     Analyzes AWS CloudTrail events and explains the reasons for AccessDenied
     """
-    _initialize_config_from_user_input(
+    initialize_config_from_user_input(
         config,
         output_file,
         management_account_role_arn,
