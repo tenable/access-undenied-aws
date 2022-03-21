@@ -29,6 +29,7 @@ Access Undenied parses AWS AccessDenied CloudTrail events, explains the reasons 
         - [ExplicitDenyPolicies](#explicitdenypolicies)
   - [Acknowledgements](#acknowledgements)
   - [Appendices](#appendices)
+    - [Running AccessUndenied from a Lambda function](#running-accessundenied-from-a-lambda-function)
     - [Setting up a venv](#setting-up-a-venv)
     - [Getting Cloudtrail events from the AWS Console's event history](#getting-cloudtrail-events-from-the-aws-consoles-event-history)
     - [Example Cloudtrail event](#example-cloudtrail-event)
@@ -314,6 +315,8 @@ causing explicit deny
 This project makes use of Ian Mckay's [iam-dataset](https://github.com/iann0036/iam-dataset) Ben
 Kehoe's [aws-error-utils](https://github.com/benkehoe/aws-error-utils).
 ## Appendices
+### Running AccessUndenied from a Lambda function
+[Full README here](examples/lambda/README.md)
 ### Setting up a venv
 ```
 python -m venv .venv
