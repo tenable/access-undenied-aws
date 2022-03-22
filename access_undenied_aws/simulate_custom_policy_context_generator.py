@@ -10,8 +10,8 @@ from typing import (
     Iterable,
 )
 
+from aws_error_utils import ClientError
 import boto3
-import botocore.exceptions
 
 from access_undenied_aws import event
 from access_undenied_aws import event_permission_data
@@ -68,7 +68,7 @@ class SimulateCustomPolicyContextGenerator(object):
                 principal_tags = self.iam_client.list_user_tags(
                     UserName=(self.event_permission_data.principal.name)
                 )["Tags"]
-        except botocore.exceptions.ClientError as list_tags_error:
+        except ClientError as list_tags_error:
             logger.error(
                 f"[Error:{repr(list_tags_error)}] when getting" " aws:PrincipalTag value"
             )

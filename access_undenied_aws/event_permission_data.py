@@ -4,8 +4,8 @@ import json
 import re
 from typing import Optional
 
+from aws_error_utils import ClientError
 import boto3
-import botocore.exceptions
 import pkg_resources
 
 from access_undenied_aws import event
@@ -352,7 +352,7 @@ def _get_principal_arn_from_cross_account_principal_id(
                 aws_session_token=role_credentials["Credentials"]["SessionToken"],
             )
             iam_client = target_account_session.client("iam")
-        except botocore.exceptions.ClientError:
+        except ClientError:
             raise common.AccessUndeniedError(
                 message=(
                     f"Could not assume role into account {account_id} while"
@@ -381,7 +381,7 @@ def _get_principal_arn_from_cross_account_principal_id(
                 f"Unknown unique id type for {principal_unique_id}",
                 common.AccessDeniedReason.ERROR,
             )
-    except botocore.exceptions.ClientError:
+    except ClientError:
         raise common.AccessUndeniedError(
             "Could not list roles/users while parsing AROA in account" f" {account_id}",
             common.AccessDeniedReason.ERROR,

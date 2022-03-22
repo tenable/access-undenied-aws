@@ -3,8 +3,7 @@ import re
 from typing import Optional
 
 import boto3
-import botocore
-from aws_error_utils import errors
+from aws_error_utils import errors, ClientError
 
 from access_undenied_aws import common
 from access_undenied_aws import event_permission_data
@@ -100,7 +99,7 @@ def _get_resource_account_session(config: common.Config, resource: common.Resour
             aws_secret_access_key=role_credentials["SecretAccessKey"],
             aws_session_token=role_credentials["SessionToken"],
         )
-    except botocore.exceptions.ClientError as client_error:
+    except ClientError as client_error:
         logger.error(
             f"Could not assume resource account role: {role_arn}:" f" {str(client_error)}"
         )
@@ -219,7 +218,7 @@ def get_resource_policy(
                 region,
                 event_permission_data_.resource,
             )
-    except botocore.exceptions.ClientError as client_error:
+    except ClientError as client_error:
         raise common.AccessUndeniedError(
             f"[Error:{str(client_error)}] Getting resource policy for"
             f" [resource_arn={event_permission_data_.resource.arn}]",

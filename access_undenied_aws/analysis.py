@@ -7,8 +7,7 @@ from typing import (
     Union,
 )
 
-import botocore.exceptions
-from aws_error_utils import errors
+from aws_error_utils import errors, ClientError
 
 from access_undenied_aws import common
 from access_undenied_aws import event
@@ -91,10 +90,10 @@ def analyze(config: common.Config, raw_event: Dict[str, Any]) -> Optional[result
             return _handle_encoded_message(config, event_.error_message)
         except (
             errors.InvalidAuthorizationMessageException,
-        ) as invalid_authorization_message_exception:
+        ) as access_undenied_error:
             logger.debug(
                 "Could not decode authorization message:"
-                f" {invalid_authorization_message_exception}. Continuing"
+                f" {access_undenied_error}. Continuing"
                 " analysis as usual."
             )
 
@@ -154,30 +153,30 @@ def analyze(config: common.Config, raw_event: Dict[str, Any]) -> Optional[result
         )
         if analysis_result:
             return analysis_result
-    except common.AccessUndeniedError as invalid_authorization_message_exception:
+    except common.AccessUndeniedError as access_undenied_error:
         logger.error(
-            str(invalid_authorization_message_exception)
+            str(access_undenied_error)
             + f" [eventID:{raw_event.get('eventID', '<None>')}]"
         )
         return results.ErrorResult(
             event_id=raw_event.get("eventID", "<None>"),
-            assessment_result=invalid_authorization_message_exception.access_denied_reason,
-            error_message=str(invalid_authorization_message_exception),
+            assessment_result=access_undenied_error.access_denied_reason,
+            error_message=str(access_undenied_error),
         )
 
     except (
-        errors.AccessDenied,
-        botocore.exceptions.ClientError,
-    ) as invalid_authorization_message_exception:
+        ClientError
+    ) as access_undenied_error:
         logger.error(
-            repr(invalid_authorization_message_exception)
+            repr(access_undenied_error)
             + f" [eventID:{raw_event.get('eventID', '<None>')}]"
         )
         return results.ErrorResult(
             event_id=raw_event.get("eventID", "<None>"),
             assessment_result=common.AccessDeniedReason.ERROR,
-            error_message=str(invalid_authorization_message_exception),
+            error_message=str(access_undenied_error),
         )
+
 
 
 def analyze_cloudtrail_events(config: common.Config, raw_events_file_path):
