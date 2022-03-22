@@ -1,5 +1,5 @@
+from aws_error_utils import ClientError
 import boto3
-import botocore
 import cachetools
 from cachetools import keys
 import collections.abc
@@ -107,7 +107,7 @@ def _get_cross_account_iam_client(
             aws_secret_access_key=role_credentials["Credentials"]["SecretAccessKey"],
             aws_session_token=role_credentials["Credentials"]["SessionToken"],
         ).client("iam")
-    except botocore.exceptions.ClientError as client_error:
+    except ClientError as client_error:
         msg = (
             "Could not assume cross-account role: [role_arn: "
             f"arn:aws:iam::{target_account}:role/{cross_account_role_name}]."
