@@ -102,7 +102,7 @@ aws lambda publish-layer-version --layer-name access-undenied-layer --descriptio
 aws lambda create-function \
 --function-name access-undenied-lambda \
 --runtime python3.8 \
---zip-file fileb://lamba_handler.zip \
+--zip-file fileb://lambda_handler.zip \
 --handler lambda_handler.lambda_handler \
 --timeout 180 \
 --memory-size 256 \
