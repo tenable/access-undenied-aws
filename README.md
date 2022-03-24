@@ -31,6 +31,7 @@ Access Undenied parses AWS AccessDenied CloudTrail events, explains the reasons 
   - [Appendices](#appendices)
     - [Running AccessUndenied from a Lambda function](#running-accessundenied-from-a-lambda-function)
     - [Setting up a venv](#setting-up-a-venv)
+    - [Getting CloudTrail events via the LookupEvents API with the CLI](#getting-cloudtrail-events-via-the-lookupevents-api-with-the-cli)
     - [Getting Cloudtrail events from the AWS Console's event history](#getting-cloudtrail-events-from-the-aws-consoles-event-history)
     - [Example Cloudtrail event](#example-cloudtrail-event)
     - [Least privilege AccessUndenied policy](#least-privilege-accessundenied-policy)
@@ -87,8 +88,10 @@ Access Undenied works by analyzing a CloudTrail event where access was denied an
 or Client.UnauthorizedOperation, it works on an input of one or more CloudTrail events. You can get them from wherever
 you get events, they can be found in the event history in the console, or by the LookupEvents API, or through whatever
 system you use in order to filter and detect events: Athena, Splunk, others. You can either download the records file 
-(the default format for multiple events) or just copy and paste a single event. For an example of how to do 
-this: [Getting Cloudtrail events from the AWS Console's event history](#getting-cloudtrail-events-from-the-aws-consoles-event-history)
+(the default format for multiple events) or just copy and paste a single event. For examples of how to do 
+this: 
+- [Getting CloudTrail events via the LookupEvents API with the CLI](#getting-cloudtrail-events-via-the-lookupevents-api-with-the-cli).
+- [Getting Cloudtrail events from the AWS Console's event history](#getting-cloudtrail-events-from-the-aws-consoles-event-history).
 
 ### Permissions
 
