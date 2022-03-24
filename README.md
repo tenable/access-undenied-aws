@@ -331,7 +331,32 @@ python -m venv .venv
 | Windows    | cmd.exe         | C:\> .venv\Scripts\activate.bat        |
 |            | PowerShell      | PS C:\> .venv\Scripts\Activate.ps1     |
 
-### Getting Cloudtrail events from the AWS Console's event history
+### Getting CloudTrail events via the LookupEvents API with the CLI
+This section is directly based on this [AWS support page](https://aws.amazon.com/premiumsupport/knowledge-center/troubleshoot-iam-permission-errors/).
+It has been adapted so that the command outputs raw events rather than an ascii table.
+1.    Run the following AWS CLI command:
+```
+aws cloudtrail lookup-events --start-time "yyyy-mm-ddThh:mm:ss+0000" --end-time "yyyy-mm-ddThh:mm:ss+0000" \
+  --query "Events[*].CloudTrailEvent" --output text | jq -r ". | \
+  select(.userIdentity.arn == \"arn:aws:sts::123456789012:assumed-role/role-name/role-session-name\" \
+  and .eventType == \"AwsApiCall\" and .errorCode != null \
+  and (.errorCode | ascii_downcase | (contains(\"accessdenied\") or contains(\"unauthorized\"))))" | \
+  jq -s '{Records:.}' > lookup_events_output.json
+```
+> Note: The rate of lookup requests to CloudTrail is limited to one request per second per account. If you exceed this limit, then a throttling error occurs.
+
+You can get errors for all users by removing this line:
+```
+.userIdentity.arn == \"arn:aws:sts::123456789012:assumed-role/role-name/role-session-name\" and
+```
+
+The command outputs errors to `lookup_events_output.json`, which can be analyzed by Access Undenied
+(using additional parameters as needed).
+```
+access-undenied-aws analyze --events-file lookup_events_output.json
+```
+
+### Getting CloudTrail events from the AWS Console's event history
 
 1. Open the AWS console
 2. Go to "CloudTrail"
