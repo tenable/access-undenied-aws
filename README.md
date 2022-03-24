@@ -31,6 +31,7 @@ Access Undenied parses AWS AccessDenied CloudTrail events, explains the reasons 
   - [Appendices](#appendices)
     - [Running AccessUndenied from a Lambda function](#running-accessundenied-from-a-lambda-function)
     - [Setting up a venv](#setting-up-a-venv)
+    - [Getting CloudTrail events via the LookupEvents API with the CLI](#getting-cloudtrail-events-via-the-lookupevents-api-with-the-cli)
     - [Getting Cloudtrail events from the AWS Console's event history](#getting-cloudtrail-events-from-the-aws-consoles-event-history)
     - [Example Cloudtrail event](#example-cloudtrail-event)
     - [Least privilege AccessUndenied policy](#least-privilege-accessundenied-policy)
@@ -87,8 +88,10 @@ Access Undenied works by analyzing a CloudTrail event where access was denied an
 or Client.UnauthorizedOperation, it works on an input of one or more CloudTrail events. You can get them from wherever
 you get events, they can be found in the event history in the console, or by the LookupEvents API, or through whatever
 system you use in order to filter and detect events: Athena, Splunk, others. You can either download the records file 
-(the default format for multiple events) or just copy and paste a single event. For an example of how to do 
-this: [Getting Cloudtrail events from the AWS Console's event history](#getting-cloudtrail-events-from-the-aws-consoles-event-history)
+(the default format for multiple events) or just copy and paste a single event. For examples of how to do 
+this: 
+- [Getting CloudTrail events via the LookupEvents API with the CLI](#getting-cloudtrail-events-via-the-lookupevents-api-with-the-cli).
+- [Getting Cloudtrail events from the AWS Console's event history](#getting-cloudtrail-events-from-the-aws-consoles-event-history).
 
 ### Permissions
 
@@ -331,7 +334,32 @@ python -m venv .venv
 | Windows    | cmd.exe         | C:\> .venv\Scripts\activate.bat        |
 |            | PowerShell      | PS C:\> .venv\Scripts\Activate.ps1     |
 
-### Getting Cloudtrail events from the AWS Console's event history
+### Getting CloudTrail events via the LookupEvents API with the CLI
+This section is directly based on this [AWS support page](https://aws.amazon.com/premiumsupport/knowledge-center/troubleshoot-iam-permission-errors/).
+It has been adapted so that the command outputs raw events rather than an ascii table.
+1.    Run the following AWS CLI command:
+```
+aws cloudtrail lookup-events --start-time "yyyy-mm-ddThh:mm:ss+0000" --end-time "yyyy-mm-ddThh:mm:ss+0000" \
+  --query "Events[*].CloudTrailEvent" --output text | jq -r ". | \
+  select(.userIdentity.arn == \"arn:aws:sts::123456789012:assumed-role/role-name/role-session-name\" \
+  and .eventType == \"AwsApiCall\" and .errorCode != null \
+  and (.errorCode | ascii_downcase | (contains(\"accessdenied\") or contains(\"unauthorized\"))))" | \
+  jq -s '{Records:.}' > lookup_events_output.json
+```
+> Note: The rate of lookup requests to CloudTrail is limited to one request per second per account. If you exceed this limit, then a throttling error occurs.
+
+You can get errors for all users by removing this line:
+```
+.userIdentity.arn == \"arn:aws:sts::123456789012:assumed-role/role-name/role-session-name\" and
+```
+
+The command outputs errors to `lookup_events_output.json`, which can be analyzed by Access Undenied
+(using additional parameters as needed).
+```
+access-undenied-aws analyze --events-file lookup_events_output.json
+```
+
+### Getting CloudTrail events from the AWS Console's event history
 
 1. Open the AWS console
 2. Go to "CloudTrail"
