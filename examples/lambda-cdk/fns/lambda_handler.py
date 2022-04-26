@@ -1,6 +1,6 @@
-import io
 import sys
 import boto3
+from os import environ
 
 import access_undenied_aws
 import access_undenied_aws.analysis
@@ -10,8 +10,8 @@ import access_undenied_aws.organizations
 
 ACCESS_UNDENIED_ROLE = "accessUndenied"
 ACCOUNT = "123456789012"
-# BUCKET_NAME = "my-bucket-name"
-# BUCKET_KEY = "scp_data.json"
+
+client = boto3.client('sns')
 
 
 def lambda_handler(event, context):
@@ -25,13 +25,13 @@ def lambda_handler(event, context):
         management_account_role_arn=(f"arn:aws:iam::{ACCOUNT}:role/{ACCESS_UNDENIED_ROLE}"),
         output_file=sys.stdout,
         suppress_output=True)
-    with open('scp_data.json', 'r') as file:
-        scp_data = file.read()
     access_undenied_aws.organizations.initialize_organization_data(
         config=config,
-        scp_file_content=scp_data
+        scp_file_content=''
     )
-    result = access_undenied_aws.analysis.analyze(config, event)
+    result = access_undenied_aws.analysis.analyze(config, event.get("detail", event))
+    client.publish(TargetArn=environ['SNS_TOPIC_ARN'], Message=str(result))
+
     return {
         'statusCode': 200,
         'body': str(result)
