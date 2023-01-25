@@ -10,7 +10,7 @@
     "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission2>[^\n\\s]+) (on resource: (?P<resource>[^\\s]+) )?because no (?P<missingAllowPolicyType>[^\\s]+) policy allows the (?P<iamPermission>[^\n\\s]+) action",
     "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) on resource: (?P<resource>[^\\s]+$)",
     "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) on resource: (?P<resource>[^\\s]+) with an explicit deny",
-    "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) on resource: (?P<resource>[^\\s]+) with an explicit deny in an? (?P<policyType>[^\\s]+) policy",
+    "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) on resource: (?P<resource>[^\\s]+) with an explicit deny in an? (?P<policyType>.+) policy",
     "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) on resource: role (?P<roleName>[^\\s]+$)",
     "User: (?P<principal>[^\\s]+) is not authorized to perform: (?P<iamPermission>[^\n\\s]+) with an explicit deny",
     "User: (?P<principal>[^\\s]+) is not authorized to access this resource",
