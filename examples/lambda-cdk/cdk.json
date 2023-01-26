@@ -25,6 +25,9 @@
     "@aws-cdk/core:target-partitions": [
       "aws",
       "aws-cn"
-    ]
+    ],
+    "AccessUndeniedRoleName": "AccessUndeniedRole",
+    "AccessUndeniedLambdaRoleName": "AccessUndeniedLambdaRole",
+    "AccountList": []
   }
 }
